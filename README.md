@@ -4,7 +4,7 @@
 
 <h1 align="center">Unified MCP Client Library for Elixir</h1>
 
-[![License](https://img.shields.io/github/license/yourusername/mcpixir)](https://github.com/yourusername/mcpixir/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/ramonlimaramos/mcpixir)](https://github.com/ramonlimaramos/mcpixir/blob/main/LICENSE)
 [![Elixir Version](https://img.shields.io/badge/elixir-v1.15%2B-blue)](https://elixir-lang.org/)
 [![Hex.pm Version](https://img.shields.io/hexpm/v/mcpixir.svg)](https://hex.pm/packages/mcpixir)
 [![Hex.pm Downloads](https://img.shields.io/hexpm/dt/mcpixir.svg)](https://hex.pm/packages/mcpixir)
