@@ -2,7 +2,7 @@ defmodule Mcpixir.MixProject do
   use Mix.Project
 
   @version "0.1.0"
-  @source_url "https://github.com/yourusername/mcpixir"
+  @source_url "https://github.com/ramonlimaramos/mcpixir"
 
   def project do
     [
