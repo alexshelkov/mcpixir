@@ -8,9 +8,9 @@ defmodule Mcpixir.LLMClient.Anthropic do
 
   @behaviour Mcpixir.LLMClient.Base
 
-  alias LangChain.Message
   alias LangChain.Chains.LLMChain
   alias LangChain.ChatModels.ChatAnthropic
+  alias LangChain.Message
 
   @impl Mcpixir.LLMClient.Base
   def run(client, messages) do
@@ -66,7 +66,7 @@ defmodule Mcpixir.LLMClient.Anthropic do
           _ -> Message.new_user!(content)
         end
 
-      LangChain.Chains.LLMChain.add_message(acc_chain, langchain_message)
+      LLMChain.add_message(acc_chain, langchain_message)
     end)
   end
 

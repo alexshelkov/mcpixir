@@ -49,7 +49,8 @@ defmodule Mcpixir.Connectors.WebSocketConnector do
   end
 
   @impl Mcpixir.Connectors.Base
-  @spec initialize(Mcpixir.Connectors.Base.connector()) :: {:ok, Mcpixir.Connectors.Base.connector()} | {:error, any()}
+  @spec initialize(Mcpixir.Connectors.Base.connector()) ::
+          {:ok, Mcpixir.Connectors.Base.connector()} | {:error, any()}
   def initialize(connector) do
     Base.initialize(connector)
   end
@@ -61,7 +62,8 @@ defmodule Mcpixir.Connectors.WebSocketConnector do
   end
 
   @impl Mcpixir.Connectors.Base
-  @spec execute_tool(Mcpixir.Connectors.Base.connector(), String.t(), map()) :: {:ok, any()} | {:error, any()}
+  @spec execute_tool(Mcpixir.Connectors.Base.connector(), String.t(), map()) ::
+          {:ok, any()} | {:error, any()}
   def execute_tool(connector, tool_name, args) do
     Base.execute_tool(connector, tool_name, args)
   end
@@ -70,11 +72,15 @@ defmodule Mcpixir.Connectors.WebSocketConnector do
   @spec close(Mcpixir.Connectors.Base.connector()) :: :ok | {:error, any()}
   def close(connector) do
     case connector do
-      %{client_pid: pid, response_table: table} when is_pid(pid) and (is_atom(table) or is_reference(table)) ->
+      %{client_pid: pid, response_table: table}
+      when is_pid(pid) and (is_atom(table) or is_reference(table)) ->
         WebSockex.cast(pid, :terminate)
         :ets.delete(table)
-      _ -> nil
+
+      _ ->
+        nil
     end
+
     :ok
   end
 
@@ -128,14 +134,17 @@ defmodule Mcpixir.Connectors.WebSocketConnector do
       case :ets.lookup(connector.response_table, id) do
         [{^id, response}] ->
           handle_websocket_response(connector, id, response)
+
         [] ->
           Process.sleep(100)
           wait_for_response(connector, id, attempts + 1)
       end
     end
   end
+
   defp handle_websocket_response(connector, id, response) do
     :ets.delete(connector.response_table, id)
+
     if Map.has_key?(response, "error") do
       {:error, response["error"]}
     else

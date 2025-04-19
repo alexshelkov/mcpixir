@@ -46,9 +46,8 @@ defmodule Mix.Tasks.Mcpixir.Filesystem do
     Application.ensure_all_started(:httpoison)
     Application.ensure_all_started(:jason)
     Application.ensure_all_started(:langchain)
-    
     # Force load LangChain core modules
-    Code.ensure_loaded?(LangChain) 
+    Code.ensure_loaded?(LangChain)
     Code.ensure_loaded?(LangChain.Message)
     Code.ensure_loaded?(LangChain.ChatModels)
 
@@ -82,9 +81,8 @@ defmodule Mix.Tasks.Mcpixir.Filesystem do
   defp run_filesystem_example(provider, model, query, path) do
     # Explicitly ensure LangChain is started
     Application.ensure_all_started(:langchain)
-    
+
     # Skip the LangChain check since we've made it a required dependency
-    
     # Load required API keys
     load_api_keys()
 

@@ -56,6 +56,7 @@ defmodule Mcpixir.Config do
       read_config_file(path)
     end)
   end
+
   defp read_config_file(path) do
     with {:ok, content} <- File.read(path),
          {:ok, config} <- Jason.decode(content) do

@@ -82,7 +82,9 @@ defmodule Mcpixir do
           {:ok, prepared_agent} -> {:ok, prepared_agent}
           {:error, _} -> {:error, "Failed to prepare agent"}
         end
-      _ -> {:error, "Failed to create agent"}
+
+      _ ->
+        {:error, "Failed to create agent"}
     end
   end
 

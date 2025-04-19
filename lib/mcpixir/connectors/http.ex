@@ -44,7 +44,8 @@ defmodule Mcpixir.Connectors.HttpConnector do
   end
 
   @impl Mcpixir.Connectors.Base
-  @spec initialize(Mcpixir.Connectors.Base.connector()) :: {:ok, Mcpixir.Connectors.Base.connector()} | {:error, any()}
+  @spec initialize(Mcpixir.Connectors.Base.connector()) ::
+          {:ok, Mcpixir.Connectors.Base.connector()} | {:error, any()}
   def initialize(connector) do
     Base.initialize(connector)
   end
@@ -56,7 +57,8 @@ defmodule Mcpixir.Connectors.HttpConnector do
   end
 
   @impl Mcpixir.Connectors.Base
-  @spec execute_tool(Mcpixir.Connectors.Base.connector(), String.t(), map()) :: {:ok, any()} | {:error, any()}
+  @spec execute_tool(Mcpixir.Connectors.Base.connector(), String.t(), map()) ::
+          {:ok, any()} | {:error, any()}
   def execute_tool(connector, tool_name, args) do
     Base.execute_tool(connector, tool_name, args)
   end
