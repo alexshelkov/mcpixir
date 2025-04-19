@@ -131,6 +131,7 @@ defmodule Mix.Tasks.Mcpixir.Release do
     IO.puts("Running tests...")
 
     cmd_output = System.cmd("mix", ["test"], stderr_to_stdout: true)
+
     case cmd_output do
       {_, 0} -> :ok
       {output, _} -> raise "Tests failed, aborting release\n#{output}"
@@ -141,6 +142,7 @@ defmodule Mix.Tasks.Mcpixir.Release do
     IO.puts("Compiling documentation...")
 
     cmd_output = System.cmd("mix", ["docs"], stderr_to_stdout: true)
+
     case cmd_output do
       {_, 0} -> :ok
       {output, _} -> raise "Documentation compilation failed, aborting release\n#{output}"
@@ -162,6 +164,7 @@ defmodule Mix.Tasks.Mcpixir.Release do
     IO.puts("Publishing to Hex.pm...")
 
     cmd_output = System.cmd("mix", ["hex.publish"], stderr_to_stdout: true)
+
     case cmd_output do
       {_, 0} -> :ok
       {output, _} -> raise "Failed to publish to Hex.pm\n#{output}"

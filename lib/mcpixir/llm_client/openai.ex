@@ -66,7 +66,7 @@ defmodule Mcpixir.LLMClient.OpenAI do
           _ -> Message.new_user!(content)
         end
 
-      LangChain.Chains.LLMChain.add_message(acc_chain, langchain_message)
+      LLMChain.add_message(acc_chain, langchain_message)
     end)
   end
 

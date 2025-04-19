@@ -29,5 +29,11 @@
   {"lib/mcpixir/agents/mcpagent.ex", :pattern_match_cov},
   {"lib/mcpixir.ex", :call},
   {"lib/mcpixir/agents/mcpagent.ex", :invalid_contract},
-  {"lib/mcpixir/agents/mcpagent.ex", :pattern_match}
+  {"lib/mcpixir/agents/mcpagent.ex", :pattern_match},
+  
+  # Ignore guard_fail warnings for LangChain checks
+  {"lib/mcpixir/application.ex", :guard_fail},
+  {"lib/mcpixir/llm_client/anthropic.ex", :guard_fail},
+  {"lib/mcpixir/llm_client/langchain.ex", :guard_fail},
+  {"lib/mcpixir/llm_client/openai.ex", :guard_fail}
 ]

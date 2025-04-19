@@ -12,21 +12,21 @@ defmodule Mcpixir.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       elixirc_paths: elixirc_paths(Mix.env()),
-      
+
       # Hex
       description: "Elixir library to connect LLMs to MCP servers for tool use capabilities",
       package: package(),
-      
+
       # Docs
       name: "Mcpixir",
       docs: docs(),
-      
+
       # Dialyzer
       dialyzer: [
         ignore_warnings: ".dialyzer_ignore.exs",
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
       ],
-      
+
       # Testing
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
@@ -48,33 +48,44 @@ defmodule Mcpixir.MixProject do
   defp deps do
     [
       # Core dependencies
-      {:jason, "~> 1.4"},         # JSON parsing (equivalent to Python's json)
-      {:httpoison, "~> 2.1"},     # HTTP client (equivalent to aiohttp)
-      {:websockex, "~> 0.4.3"},   # WebSockets client (equivalent to websockets)
-      {:nimble_pool, "~> 1.0"},   # Resource pooling
-      
+      # JSON parsing (equivalent to Python's json)
+      {:jason, "~> 1.4"},
+      # HTTP client (equivalent to aiohttp)
+      {:httpoison, "~> 2.1"},
+      # WebSockets client (equivalent to websockets)
+      {:websockex, "~> 0.4.3"},
+      # Resource pooling
+      {:nimble_pool, "~> 1.0"},
+
       # Schema validation
-      {:ex_json_schema, "~> 0.9.2"}, # JSON Schema validation (equiv to jsonschema)
-      {:ecto, "~> 3.10"},         # Data validation (similar to pydantic)
-      
+      # JSON Schema validation (equiv to jsonschema)
+      {:ex_json_schema, "~> 0.9.2"},
+      # Data validation (similar to pydantic)
+      {:ecto, "~> 3.10"},
+
       # Utility libraries
-      {:uniq, "~> 0.6"},          # Modern UUID generation with UUIDv7 support
-      {:poolboy, "~> 1.5"},       # Process pooling
-      {:typed_struct, "~> 0.3.0"}, # Type definitions (similar to typing-extensions)
-      
+      # Modern UUID generation with UUIDv7 support
+      {:uniq, "~> 0.6"},
+      # Process pooling
+      {:poolboy, "~> 1.5"},
+      # Type definitions (similar to typing-extensions)
+      {:typed_struct, "~> 0.3.0"},
+
       # LLM integrations
-      {:langchain, "~> 0.2.0"},   # LangChain integration for LLMs
-      {:req, "~> 0.4"},  # HTTP client for API calls
+      # LangChain integration for LLMs
+      {:langchain, "~> 0.2.0"},
+      # HTTP client for API calls
+      {:req, "~> 0.4"},
 
       # Documentation
       {:ex_doc, "~> 0.29", only: :dev, runtime: false},
-      
+
       # Development and testing
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false},
       {:mix_test_watch, "~> 1.1", only: [:dev, :test]},
       {:excoveralls, "~> 0.18", only: :test},
-      
+
       # Testing
       {:mock, "~> 0.3.0", only: :test},
       {:bypass, "~> 2.1", only: :test}
@@ -105,18 +116,18 @@ defmodule Mcpixir.MixProject do
         "LICENSE"
       ],
       groups_for_modules: [
-        "Core": [
+        Core: [
           Mcpixir,
           Mcpixir.Client,
           Mcpixir.Session,
           Mcpixir.Config,
-          Mcpixir.ServerManager,
+          Mcpixir.ServerManager
         ],
-        "Agents": [
+        Agents: [
           Mcpixir.Agents.Base,
           Mcpixir.Agents.MCPAgent
         ],
-        "Connectors": [
+        Connectors: [
           Mcpixir.Connectors.Base,
           Mcpixir.Connectors.HttpConnector,
           Mcpixir.Connectors.WebSocketConnector,
@@ -128,10 +139,10 @@ defmodule Mcpixir.MixProject do
           Mcpixir.TaskManagers.WebSocketManager,
           Mcpixir.TaskManagers.SSEManager
         ],
-        "Adapters": [
+        Adapters: [
           Mcpixir.Adapters.LangChainAdapter
         ],
-        "Tools": [
+        Tools: [
           Mix.Tasks.Mcp,
           Mix.Tasks.Mcp.Chat,
           Mix.Tasks.Mcp.Airbnb,

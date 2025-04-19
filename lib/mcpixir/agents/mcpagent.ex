@@ -153,35 +153,41 @@ defmodule Mcpixir.Agents.MCPAgent do
   defp process_tool_calls(agent, tool_calls, content) do
     {updated_agent, tool_results} =
       Enum.reduce(tool_calls, {agent, []}, fn tool_call, {current_agent, results} ->
-        tool_name = tool_call["name"] || tool_call["function"]["name"]
-        arguments = tool_call["arguments"] || tool_call["function"]["arguments"]
-        tool_call_id = tool_call["id"]
-
-        args =
-          case arguments do
-            args when is_binary(args) ->
-              case Jason.decode(args) do
-                {:ok, parsed} -> parsed
-                _ -> %{}
-              end
-
-            args when is_map(args) ->
-              args
-
-            _ ->
-              %{}
-          end
-
-        case run_tool(current_agent, tool_name, args) do
-          {:ok, result} ->
-            handle_successful_tool_call(current_agent, tool_call_id, tool_name, result, results)
-
-          {:error, reason} ->
-            handle_failed_tool_call(current_agent, tool_call_id, tool_name, reason, results)
-        end
+        process_single_tool_call(current_agent, tool_call, results)
       end)
 
     handle_tool_results(updated_agent, tool_results, content)
+  end
+
+  defp process_single_tool_call(agent, tool_call, results) do
+    tool_name = tool_call["name"] || tool_call["function"]["name"]
+    arguments = tool_call["arguments"] || tool_call["function"]["arguments"]
+    tool_call_id = tool_call["id"]
+    args = parse_arguments(arguments)
+
+    case run_tool(agent, tool_name, args) do
+      {:ok, result} ->
+        handle_successful_tool_call(agent, tool_call_id, tool_name, result, results)
+
+      {:error, reason} ->
+        handle_failed_tool_call(agent, tool_call_id, tool_name, reason, results)
+    end
+  end
+
+  defp parse_arguments(arguments) do
+    case arguments do
+      args when is_binary(args) ->
+        case Jason.decode(args) do
+          {:ok, parsed} -> parsed
+          _ -> %{}
+        end
+
+      args when is_map(args) ->
+        args
+
+      _ ->
+        %{}
+    end
   end
 
   defp handle_successful_tool_call(agent, tool_call_id, tool_name, result, results) do

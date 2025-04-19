@@ -150,14 +150,30 @@ defmodule Mcpixir.ServerManager do
   defp find_best_server(remaining_tools, tool_to_servers) do
     Enum.reduce(remaining_tools, {nil, 0}, fn tool, {best_server, max_count} ->
       servers = Map.get(tool_to_servers, tool, MapSet.new())
-      find_server_with_most_coverage(servers, tool, remaining_tools, tool_to_servers, best_server, max_count)
+
+      find_server_with_most_coverage(
+        servers,
+        tool,
+        remaining_tools,
+        tool_to_servers,
+        best_server,
+        max_count
+      )
     end)
   end
 
-  defp find_server_with_most_coverage(servers, tool, remaining_tools, tool_to_servers, best_server, max_count) do
+  defp find_server_with_most_coverage(
+         servers,
+         tool,
+         remaining_tools,
+         tool_to_servers,
+         best_server,
+         max_count
+       ) do
     Enum.reduce(servers, {best_server, max_count}, fn server, {current_best, current_max} ->
       covered_tools = MapSet.new(Map.get(tool_to_servers, tool, []))
       covered_count = MapSet.intersection(remaining_tools, covered_tools) |> MapSet.size()
+
       if covered_count > current_max do
         {server, covered_count}
       else

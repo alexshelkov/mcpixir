@@ -8,10 +8,10 @@ defmodule Mcpixir.TaskManagers.WebSocketManager do
   use WebSockex
 
   @type t :: %__MODULE__{
-    url: String.t(),
-    client_pid: pid() | nil,
-    config: map()
-  }
+          url: String.t(),
+          client_pid: pid() | nil,
+          config: map()
+        }
 
   defstruct [
     :url,
