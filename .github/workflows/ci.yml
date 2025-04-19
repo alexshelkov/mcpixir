@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    env:
+      MIX_ENV: test
+
+    strategy:
+      matrix:
+        elixir: ['1.15.7']
+        otp: ['26.0.2']
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      
+      - name: Restore dependencies cache
+        uses: actions/cache@v3
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+      
+      - name: Install dependencies
+        run: mix deps.get
+      
+      - name: Run tests
+        run: mix test
+      
+      - name: Check formatting
+        run: mix format --check-formatted
+      
+      - name: Run Credo
+        run: mix credo --strict
+      
+      # Dialyzer can be slow, so we make it a separate step
+      # Comment this out if it's too slow for your CI
+      - name: Run Dialyzer
+        run: mix dialyzer
+      
+      - name: Generate documentation
+        run: mix docs
+
+  # This job tests with the latest dependencies (without lock file)
+  # to catch issues with newer versions of dependencies
+  latest-deps:
+    name: Test with latest dependencies
+    runs-on: ubuntu-latest
+    env:
+      MIX_ENV: test
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.15.7'
+          otp-version: '26.0.2'
+      
+      - name: Install dependencies without lock
+        run: |
+          rm -f mix.lock
+          mix deps.get
+      
+      - name: Run tests
+        run: mix test

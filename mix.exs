@@ -1,0 +1,151 @@
+defmodule Mcpixir.MixProject do
+  use Mix.Project
+
+  @version "0.1.0"
+  @source_url "https://github.com/yourusername/mcpixir"
+
+  def project do
+    [
+      app: :mcpixir,
+      version: @version,
+      elixir: "~> 1.15",
+      start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env()),
+      
+      # Hex
+      description: "Elixir library to connect LLMs to MCP servers for tool use capabilities",
+      package: package(),
+      
+      # Docs
+      name: "Mcpixir",
+      docs: docs(),
+      
+      # Dialyzer
+      dialyzer: [
+        ignore_warnings: ".dialyzer_ignore.exs",
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
+      ],
+      
+      # Testing
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
+    ]
+  end
+
+  def application do
+    [
+      extra_applications: [:logger],
+      mod: {Mcpixir.Application, []}
+    ]
+  end
+
+  defp deps do
+    [
+      # Core dependencies
+      {:jason, "~> 1.4"},         # JSON parsing (equivalent to Python's json)
+      {:httpoison, "~> 2.1"},     # HTTP client (equivalent to aiohttp)
+      {:websockex, "~> 0.4.3"},   # WebSockets client (equivalent to websockets)
+      {:nimble_pool, "~> 1.0"},   # Resource pooling
+      
+      # Schema validation
+      {:ex_json_schema, "~> 0.9.2"}, # JSON Schema validation (equiv to jsonschema)
+      {:ecto, "~> 3.10"},         # Data validation (similar to pydantic)
+      
+      # Utility libraries
+      {:uniq, "~> 0.6"},          # Modern UUID generation with UUIDv7 support
+      {:poolboy, "~> 1.5"},       # Process pooling
+      {:typed_struct, "~> 0.3.0"}, # Type definitions (similar to typing-extensions)
+      
+      # LLM integrations
+      {:langchain, "~> 0.2.0"},   # LangChain integration for LLMs
+      {:req, "~> 0.4"},  # HTTP client for API calls
+
+      # Documentation
+      {:ex_doc, "~> 0.29", only: :dev, runtime: false},
+      
+      # Development and testing
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false},
+      {:mix_test_watch, "~> 1.1", only: [:dev, :test]},
+      {:excoveralls, "~> 0.18", only: :test},
+      
+      # Testing
+      {:mock, "~> 0.3.0", only: :test},
+      {:bypass, "~> 2.1", only: :test}
+    ]
+  end
+
+  defp package do
+    [
+      name: "mcpixir",
+      maintainers: ["Ramon Ramos"],
+      licenses: ["MIT"],
+      files: ~w(lib .formatter.exs mix.exs README.md CHANGELOG.md LICENSE),
+      links: %{
+        "GitHub" => @source_url,
+        "Changelog" => "#{@source_url}/blob/main/CHANGELOG.md"
+      }
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      source_url: @source_url,
+      source_ref: "v#{@version}",
+      extras: [
+        "README.md",
+        "CHANGELOG.md",
+        "LICENSE"
+      ],
+      groups_for_modules: [
+        "Core": [
+          Mcpixir,
+          Mcpixir.Client,
+          Mcpixir.Session,
+          Mcpixir.Config,
+          Mcpixir.ServerManager,
+        ],
+        "Agents": [
+          Mcpixir.Agents.Base,
+          Mcpixir.Agents.MCPAgent
+        ],
+        "Connectors": [
+          Mcpixir.Connectors.Base,
+          Mcpixir.Connectors.HttpConnector,
+          Mcpixir.Connectors.WebSocketConnector,
+          Mcpixir.Connectors.StdioConnector
+        ],
+        "Task Managers": [
+          Mcpixir.TaskManagers.Base,
+          Mcpixir.TaskManagers.StdioManager,
+          Mcpixir.TaskManagers.WebSocketManager,
+          Mcpixir.TaskManagers.SSEManager
+        ],
+        "Adapters": [
+          Mcpixir.Adapters.LangChainAdapter
+        ],
+        "Tools": [
+          Mix.Tasks.Mcp,
+          Mix.Tasks.Mcp.Chat,
+          Mix.Tasks.Mcp.Airbnb,
+          Mix.Tasks.Mcp.Blender,
+          Mix.Tasks.Mcp.Browser,
+          Mix.Tasks.Mcp.Filesystem,
+          Mix.Tasks.Mcp.Http,
+          Mix.Tasks.Mcp.Multi,
+          Mix.Tasks.Mcp.Release
+        ]
+      ]
+    ]
+  end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+end
