@@ -59,7 +59,7 @@ defmodule Mcpixir.MixProject do
 
       # Schema validation
       # JSON Schema validation (equiv to jsonschema)
-      {:ex_json_schema, "~> 0.9.2"},
+      {:ex_json_schema, "~> 0.11.1"},
       # Data validation (similar to pydantic)
       {:ecto, "~> 3.10"},
 
@@ -73,7 +73,7 @@ defmodule Mcpixir.MixProject do
 
       # LLM integrations
       # LangChain integration for LLMs
-      {:langchain, "~> 0.2.0"},
+      {:langchain, "~> 0.3.3"},
       # HTTP client for API calls
       {:req, "~> 0.4"},
 
